@@ -48,15 +48,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickedButton(View view) {
+        resetGame();
     }
 
     private void resetGame(){
         score = 0;
         amountOfGames = 0;
 
-        setUpNewGame();
+        setupList();
         setUpCountDownTimer();
         button.setVisibility(View.INVISIBLE);
+        updateScore();
+        titleTextView.setText("");
+    }
+
+    private void stopGame(){
+        for(final TextView textView : textViewList){
+            textView.setOnClickListener(null);
+        }
+        button.setVisibility(View.VISIBLE);
+
+        String rS = "Your score: " + score + "/" + amountOfGames;
+        titleTextView.setText(rS);
     }
 
     private void checkAnswer(int value){
@@ -139,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
+                stopGame();
             }
         }.start();
     }

@@ -108,8 +108,8 @@
 
     <TextView
         android:id="@+id/scoreTextView"
-        android:layout_width="83dp"
-        android:layout_height="59dp"
+        android:layout_width="103dp"
+        android:layout_height="57dp"
         android:layout_column="0"
         android:layout_columnWeight="1"
         android:layout_gravity="fill"
@@ -127,7 +127,8 @@
         android:layout_marginEnd="20dp"
         app:layout_constraintLeft_toRightOf="@+id/calculationTextView"
         android:layout_marginLeft="8dp"
-        app:layout_constraintHorizontal_bias="0.921" />
+        app:layout_constraintHorizontal_bias="1.0"
+        tools:layout_editor_absoluteX="261dp" />
 
     <TextView
         android:id="@+id/calculationTextView"
