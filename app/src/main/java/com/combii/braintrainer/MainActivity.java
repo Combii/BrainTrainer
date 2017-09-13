@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     Button button;
 
 
-    int number1, number2;
+    int number1, number2, result, score, amountOfGames;
 
 
     @Override
@@ -43,19 +44,52 @@ public class MainActivity extends AppCompatActivity {
         titleTextView = (TextView) findViewById(R.id.titleTextView);
         button = (Button) findViewById(R.id.button);
 
-
-        setupList();
-        setUpCountDownTimer();
+        resetGame();
     }
 
     public void clickedButton(View view) {
     }
 
+    private void resetGame(){
+        score = 0;
+        amountOfGames = 0;
 
-    private void generateCalculation(){
-
+        setUpNewGame();
+        setUpCountDownTimer();
+        button.setVisibility(View.INVISIBLE);
     }
 
+    private void checkAnswer(int value){
+        amountOfGames++;
+
+        String rS;
+
+        if(value == result){
+            score++;
+            rS = "Correct!";
+            titleTextView.setText(rS);
+        }
+        else{
+            rS = "Wrong!";
+            titleTextView.setText(rS);
+        }
+
+
+        setUpNewGame();
+        updateScore();
+    }
+
+    private void updateScore(){
+        String scoreS = Integer.toString(score);
+        String amountOfGamesS = Integer.toString(amountOfGames);
+
+        scoreTextView.setText(scoreS + "/" + amountOfGamesS);
+    }
+
+    private void setUpNewGame(){
+        generateCalculation();
+        setUpListNumbers();
+    }
 
     private void setupList(){
         for(final TextView textView : textViewList){
@@ -66,10 +100,34 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+        setUpNewGame();
     }
 
-    private void checkAnswer(int value){
-        Log.i("Answer: ", Integer.toString(value));
+    private void setUpListNumbers(){
+        Random r = new Random();
+
+        String intS;
+
+        for(TextView textView : textViewList){
+            intS = Integer.toString(r.nextInt(40) + 1);
+            textView.setText(intS);
+        }
+
+        intS = Integer.toString(result);
+
+        textViewList.get(r.nextInt(textViewList.size())).setText(intS);
+    }
+
+    private void generateCalculation(){
+        Random random = new Random();
+        number1 = random.nextInt(20) + 1;
+        number2 = random.nextInt(20) + 1;
+
+        result = number1 + number2;
+
+        Log.i("Result: ", Integer.toString(result));
+
+        calculationTextView.setText(Integer.toString(number1) + " + " + Integer.toString(number2));
     }
 
     private void setUpCountDownTimer(){
