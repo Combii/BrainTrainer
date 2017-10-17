@@ -1,5 +1,6 @@
 package com.combii.braintrainer;
 
+import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     TextView scoreTextView;
     TextView calculationTextView;
     TextView titleTextView;
+    Difficulty difficulty;
 
     Button button;
 
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         textViewList.add((TextView) findViewById(R.id.textView));
         textViewList.add((TextView) findViewById(R.id.textView2));
         textViewList.add((TextView) findViewById(R.id.textView3));
@@ -44,7 +48,27 @@ public class MainActivity extends AppCompatActivity {
         titleTextView = (TextView) findViewById(R.id.titleTextView);
         button = (Button) findViewById(R.id.button);
 
+        checkDifficulty();
         resetGame();
+    }
+
+    private void checkDifficulty() {
+        Intent intent = getIntent();
+
+        Difficulty result = (Difficulty) intent.getSerializableExtra("difficulty");
+
+        if(result.equals(Difficulty.HARD)) {
+            Log.i("Difficulty", "Difficulty set to Hard");
+            difficulty = Difficulty.HARD;
+        }
+        else if(result.equals(Difficulty.MEDIUM)) {
+            Log.i("Difficulty", "Difficulty set to Medium");
+            difficulty = Difficulty.MEDIUM;
+        }
+        else if(result.equals(Difficulty.EASY)) {
+            Log.i("Difficulty", "Difficulty set to Easy");
+            difficulty = Difficulty.EASY;
+        }
     }
 
     public void clickedButton(View view) {
