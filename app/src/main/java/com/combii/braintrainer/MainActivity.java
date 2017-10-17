@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     TextView calculationTextView;
     TextView titleTextView;
     Difficulty difficulty;
+    int range = 0;
 
     Button button;
 
@@ -57,17 +58,20 @@ public class MainActivity extends AppCompatActivity {
 
         Difficulty result = (Difficulty) intent.getSerializableExtra("difficulty");
 
-        if(result.equals(Difficulty.HARD)) {
+        if(result == Difficulty.HARD) {
             Log.i("Difficulty", "Difficulty set to Hard");
             difficulty = Difficulty.HARD;
+            range = 100;
         }
-        else if(result.equals(Difficulty.MEDIUM)) {
+        else if(result == Difficulty.MEDIUM) {
             Log.i("Difficulty", "Difficulty set to Medium");
             difficulty = Difficulty.MEDIUM;
+            range = 60;
         }
-        else if(result.equals(Difficulty.EASY)) {
+        else if(result == Difficulty.EASY) {
             Log.i("Difficulty", "Difficulty set to Easy");
             difficulty = Difficulty.EASY;
+            range = 20;
         }
     }
 
@@ -146,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         String intS;
 
         for(TextView textView : textViewList){
-            intS = Integer.toString(r.nextInt(40) + 1);
+            intS = Integer.toString(r.nextInt(range) + 1);
             textView.setText(intS);
         }
 
@@ -157,8 +161,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void generateCalculation(){
         Random random = new Random();
-        number1 = random.nextInt(20) + 1;
-        number2 = random.nextInt(20) + 1;
+        number1 = random.nextInt(range/2) + 1;
+        number2 = random.nextInt(range/2) + 1;
 
         result = number1 + number2;
 

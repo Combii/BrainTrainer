@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:onClick="buttonClicked"
-        android:tag="hard"
+        android:tag="Hard"
         android:text="Hard"
         app:layout_constraintBottom_toTopOf="@+id/medium"
         app:layout_constraintLeft_toLeftOf="parent"
