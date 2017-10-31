@@ -94,6 +94,8 @@ public class HighScoreActivity extends AppCompatActivity {
 
     private void setUpHighScoreListView(List<Integer> highScoreList) {
 
+        setTitle("Difficulty: " + difficulty);
+
         ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,highScoreList);
 
         highScoreListView.setAdapter(arrayAdapter);
