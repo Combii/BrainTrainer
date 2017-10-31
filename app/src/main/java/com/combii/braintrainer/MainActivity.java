@@ -59,27 +59,34 @@ public class MainActivity extends AppCompatActivity {
     private void checkDifficulty() {
         Intent intent = getIntent();
 
-        Difficulty result = (Difficulty) intent.getSerializableExtra("difficulty");
+        difficulty  = (Difficulty) intent.getSerializableExtra("difficulty");
 
-        if(result == Difficulty.HARD) {
+        if(difficulty == Difficulty.HARD) {
             Log.i("Difficulty", "Difficulty set to Hard");
-            difficulty = Difficulty.HARD;
             range = 100;
         }
-        else if(result == Difficulty.MEDIUM) {
+        else if(difficulty == Difficulty.MEDIUM) {
             Log.i("Difficulty", "Difficulty set to Medium");
-            difficulty = Difficulty.MEDIUM;
             range = 60;
         }
-        else if(result == Difficulty.EASY) {
+        else if(difficulty == Difficulty.EASY) {
             Log.i("Difficulty", "Difficulty set to Easy");
-            difficulty = Difficulty.EASY;
             range = 20;
         }
     }
 
     public void clickedPlayAgainButton(View view) {
         resetGame();
+    }
+
+    public void clickedSavedHighScoreButton(View view) {
+
+        Intent intent = new Intent(getApplicationContext(), HighScoreActivity.class);
+
+        intent.putExtra("difficulty",difficulty);
+        intent.putExtra("score", score);
+
+        startActivity(intent);
     }
 
     private void resetGame(){
@@ -99,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             textView.setOnClickListener(null);
         }
         playAgainButton.setVisibility(View.VISIBLE);
+        highScoreButton.setVisibility(View.VISIBLE);
 
         String rS = "Your score: " + score + "/" + amountOfGames;
         titleTextView.setText(rS);
@@ -201,4 +209,5 @@ public class MainActivity extends AppCompatActivity {
 
         timerTextView.setText(secondsString + 's');
     }
+
 }

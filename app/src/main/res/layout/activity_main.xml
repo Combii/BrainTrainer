@@ -188,7 +188,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
-        android:onClick="saveHighScoreClicked"
+        android:onClick="clickedSavedHighScoreButton"
         android:text="save highscore?"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
