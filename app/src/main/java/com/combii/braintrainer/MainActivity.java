@@ -188,10 +188,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpCountDownTimer(){
-        new CountDownTimer(30000, 1000) {
+        /*new CountDownTimer(30000, 1000) {
             @Override
             public void onTick(long l) {
                 updateCountDownTimer((int) l / 1000);
+            }
+
+            @Override
+            public void onFinish() {
+                stopGame();
+            }
+        }.start();*/
+        new CountDownTimer(30, 10) {
+            @Override
+            public void onTick(long l) {
+                updateCountDownTimer((int) l / 10);
             }
 
             @Override
