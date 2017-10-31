@@ -47,7 +47,6 @@ public class HighScoreActivity extends AppCompatActivity {
     }
 
     private void saveHighScore(){
-
         try{
             SQLiteDatabase myDatabase = this.openOrCreateDatabase("HighScoreDatabase", MODE_PRIVATE, null);
 
@@ -58,8 +57,9 @@ public class HighScoreActivity extends AppCompatActivity {
 
             setUpHighScoreListView(getHighScores());
 
-        }
-        catch (Exception e){
+            myDatabase.close();
+
+        } catch (Exception e){
             e.printStackTrace();
         }
     }
@@ -67,6 +67,7 @@ public class HighScoreActivity extends AppCompatActivity {
 
         private List<Integer> getHighScores(){
             SQLiteDatabase myDatabase = this.openOrCreateDatabase("HighScoreDatabase", MODE_PRIVATE, null);
+
             //Get
             Cursor c = myDatabase.rawQuery("SELECT * FROM HighScores WHERE difficulty = '" + difficulty + "'", null);
 
@@ -77,24 +78,31 @@ public class HighScoreActivity extends AppCompatActivity {
 
             List<Integer> highScoreList = new ArrayList<>();
 
-            do{
+            try {
+                while (c != null) {
 
-                Log.i("Difficulty: ", c.getString(difficultyIndex));
-                Log.i("HighScore: ", c.getString(highScoreIndex));
+                    Log.i("Difficulty: ", c.getString(difficultyIndex));
+                    Log.i("HighScore: ", c.getString(highScoreIndex));
 
-                highScoreList.add(c.getInt(highScoreIndex));
+                    highScoreList.add(c.getInt(highScoreIndex));
 
-                c.moveToNext();
-            }while(c.moveToNext());
+                    c.moveToNext();
+                }
+                c.close();
+            }
+            catch (Exception ignored){
+            }
 
-            c.close();
+            myDatabase.close();
 
             return highScoreList;
         }
 
-    private void setUpHighScoreListView(List<Integer> highScoreList) {
+        private void setUpHighScoreListView(List<Integer> highScoreList) {
 
         setTitle("Difficulty: " + difficulty);
+
+
 
         ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,highScoreList);
 

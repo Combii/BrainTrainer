@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        Log.i("Info","In on create");
 
         textViewList.add((TextView) findViewById(R.id.textView));
         textViewList.add((TextView) findViewById(R.id.textView2));
