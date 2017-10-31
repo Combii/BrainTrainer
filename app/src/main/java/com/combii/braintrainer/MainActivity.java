@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void clickedButton(View view) {
+    public void clickedPlayAgainButton(View view) {
         resetGame();
     }
 
