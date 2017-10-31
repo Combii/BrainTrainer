@@ -8,15 +8,19 @@
 
 
     <GridLayout
-        android:layout_width="344dp"
+        android:layout_width="0dp"
         android:layout_height="263dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="20dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="46dp"
         app:layout_constraintTop_toBottomOf="@+id/calculationTextView"
-        android:id="@+id/gridLayout2">
+        android:id="@+id/gridLayout2"
+        tools:layout_constraintRight_creator="1"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        tools:layout_constraintLeft_creator="1">
 
         <TextView
             android:id="@+id/textView"
@@ -104,7 +108,8 @@
         android:layout_marginStart="22dp"
         app:layout_constraintRight_toLeftOf="@+id/calculationTextView"
         android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginEnd="8dp" />
 
     <TextView
         android:id="@+id/scoreTextView"
@@ -122,20 +127,18 @@
         android:text="0"
         android:textSize="36sp"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="20dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginEnd="20dp"
         app:layout_constraintLeft_toRightOf="@+id/calculationTextView"
         android:layout_marginLeft="8dp"
         app:layout_constraintHorizontal_bias="1.0"
-        tools:layout_editor_absoluteX="261dp" />
+        android:layout_marginStart="8dp" />
 
     <TextView
         android:id="@+id/calculationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginTop="42dp"
         android:text="8 + 5"
         android:textSize="30sp"
@@ -143,39 +146,53 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintLeft_creator="1" />
 
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="51dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout2"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintLeft_creator="1" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/playAgainButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:onClick="clickedButton"
         android:text="Play Again?"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-        app:layout_constraintVertical_bias="1.0"
-        android:layout_marginLeft="8dp"
+        app:layout_constraintHorizontal_bias="0.156"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/saveHighscore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:onClick="saveHighScoreClicked"
+        android:text="save highscore?"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintRight_creator="1" />
 
 </android.support.constraint.ConstraintLayout>

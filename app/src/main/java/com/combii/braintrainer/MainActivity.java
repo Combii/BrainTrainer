@@ -1,6 +1,8 @@
 package com.combii.braintrainer;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     Difficulty difficulty;
     int range = 0;
 
-    Button button;
+    Button playAgainButton, highScoreButton;
 
 
     int number1, number2, result, score, amountOfGames;
@@ -47,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
         scoreTextView = (TextView) findViewById(R.id.scoreTextView);
         calculationTextView = (TextView) findViewById(R.id.calculationTextView);
         titleTextView = (TextView) findViewById(R.id.titleTextView);
-        button = (Button) findViewById(R.id.button);
+        playAgainButton = (Button) findViewById(R.id.playAgainButton);
+        highScoreButton = (Button) findViewById(R.id.saveHighscore);
 
         checkDifficulty();
         resetGame();
@@ -85,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
 
         setupList();
         setUpCountDownTimer();
-        button.setVisibility(View.INVISIBLE);
+        playAgainButton.setVisibility(View.INVISIBLE);
+        highScoreButton.setVisibility(View.INVISIBLE);
         updateScore();
         titleTextView.setText("");
     }
@@ -94,10 +98,14 @@ public class MainActivity extends AppCompatActivity {
         for(final TextView textView : textViewList){
             textView.setOnClickListener(null);
         }
-        button.setVisibility(View.VISIBLE);
+        playAgainButton.setVisibility(View.VISIBLE);
 
         String rS = "Your score: " + score + "/" + amountOfGames;
         titleTextView.setText(rS);
+
+        SharedPreferences sharedPreferences = this.getSharedPreferences("com.combii.braintrainer", Context.MODE_PRIVATE);
+
+        sharedPreferences.edit().putString("highscore", score + "").apply();
     }
 
     private void checkAnswer(int value){
