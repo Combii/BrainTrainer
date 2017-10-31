@@ -199,10 +199,10 @@ public class MainActivity extends AppCompatActivity {
                 stopGame();
             }
         }.start();*/
-        new CountDownTimer(30, 10) {
+        new CountDownTimer(3000, 100) {
             @Override
             public void onTick(long l) {
-                updateCountDownTimer((int) l / 10);
+                updateCountDownTimer((int) l / 100);
             }
 
             @Override

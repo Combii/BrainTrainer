@@ -7,7 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HighScoreActivity extends AppCompatActivity {
 
@@ -40,10 +46,6 @@ public class HighScoreActivity extends AppCompatActivity {
         saveHighScore();
     }
 
-    private void setUpHighScoreListview() {
-
-    }
-
     private void saveHighScore(){
 
         try{
@@ -54,7 +56,7 @@ public class HighScoreActivity extends AppCompatActivity {
             //Insert
             myDatabase.execSQL("INSERT INTO HighScores (difficulty, highScore) VALUES ('" + difficulty + "', " + score + ")");
 
-            getHighScores();
+            setUpHighScoreListView(getHighScores());
 
         }
         catch (Exception e){
@@ -63,22 +65,44 @@ public class HighScoreActivity extends AppCompatActivity {
     }
 
 
-    private void getHighScores(){
-        SQLiteDatabase myDatabase = this.openOrCreateDatabase("HighScoreDatabase", MODE_PRIVATE, null);
-        //Get
-        Cursor c = myDatabase.rawQuery("SELECT * FROM HighScores", null);
+        private List<Integer> getHighScores(){
+            SQLiteDatabase myDatabase = this.openOrCreateDatabase("HighScoreDatabase", MODE_PRIVATE, null);
+            //Get
+            Cursor c = myDatabase.rawQuery("SELECT * FROM HighScores WHERE difficulty = '" + difficulty + "'", null);
 
-        int difficultyIndex = c.getColumnIndex("difficulty");
-        int highScoreIndex = c.getColumnIndex("highScore");
+            int difficultyIndex = c.getColumnIndex("difficulty");
+            int highScoreIndex = c.getColumnIndex("highScore");
 
-        c.moveToFirst();
-        do{
+            c.moveToFirst();
 
-            Log.i("Difficulty: ", c.getString(difficultyIndex));
-            Log.i("HighScore: ", c.getString(highScoreIndex));
+            List<Integer> highScoreList = new ArrayList<>();
 
-            c.moveToNext();
-        }while(c != null);
+            do{
+
+                Log.i("Difficulty: ", c.getString(difficultyIndex));
+                Log.i("HighScore: ", c.getString(highScoreIndex));
+
+                highScoreList.add(c.getInt(highScoreIndex));
+
+                c.moveToNext();
+            }while(c.moveToNext());
+
+            c.close();
+
+            return highScoreList;
+        }
+
+    private void setUpHighScoreListView(List<Integer> highScoreList) {
+
+        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,highScoreList);
+
+        highScoreListView.setAdapter(arrayAdapter);
+        highScoreListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            }
+        });
+
     }
 }
 
