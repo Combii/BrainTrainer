@@ -41,9 +41,9 @@ public class HighScoreActivity extends AppCompatActivity {
     private void getHighScore(){
         Intent intent = getIntent();
 
-        boolean viewAllHighscores = intent.getBooleanExtra("viewAll",false);
+        boolean viewAllHighScores = intent.getBooleanExtra("viewAll",false);
 
-        if (!viewAllHighscores) {
+        if (!viewAllHighScores) {
             //getStringExtra if String
             difficulty  = (Difficulty) intent.getSerializableExtra("difficulty");
             score = intent.getIntExtra("score", 0);
@@ -53,7 +53,7 @@ public class HighScoreActivity extends AppCompatActivity {
 
             saveHighScore();
         } else {
-            getHighScores(true);
+            setUpHighScoreListView(getHighScores(true));
         }
     }
 
@@ -70,7 +70,7 @@ public class HighScoreActivity extends AppCompatActivity {
     }
 
 
-        private List<String> getHighScores(boolean viewAll){
+    private List<String> getHighScores(boolean viewAll){
             SQLiteDatabase myDatabase = this.openOrCreateDatabase("HighScoreDatabase", MODE_PRIVATE, null);
 
             Cursor c;
