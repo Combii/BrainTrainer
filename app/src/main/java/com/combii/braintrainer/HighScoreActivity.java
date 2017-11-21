@@ -109,8 +109,6 @@ public class HighScoreActivity extends AppCompatActivity {
 
     private void setUpHighScoreListView(List<String> highScoreList) {
 
-        setTitle("Difficulty: " + difficulty);
-
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, highScoreList);
 
@@ -126,14 +124,18 @@ public class HighScoreActivity extends AppCompatActivity {
 
     public void clickedButtonHard(View view) {
         setUpHighScoreListView(getHighScores(Difficulty.HARD));
+        setTitle("Difficulty: " + Difficulty.HARD.toString());
+
     }
 
     public void clickedButtonMedium(View view) {
         setUpHighScoreListView(getHighScores(Difficulty.MEDIUM));
+        setTitle("Difficulty: " + Difficulty.MEDIUM.toString());
     }
 
     public void clickedButtonEasy(View view) {
         setUpHighScoreListView(getHighScores(Difficulty.EASY));
+        setTitle("Difficulty: " + Difficulty.EASY.toString());
     }
 }
 
