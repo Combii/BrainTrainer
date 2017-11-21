@@ -43,6 +43,8 @@ public class HighScoreActivity extends AppCompatActivity {
 
         boolean viewAllHighScores = intent.getBooleanExtra("viewAll",false);
 
+        myDatabase.execSQL("CREATE TABLE IF NOT EXISTS HighScores (difficulty VARCHAR, highScore INT(4) UNIQUE)");
+
         if (!viewAllHighScores) {
             //getStringExtra if String
             difficulty  = (Difficulty) intent.getSerializableExtra("difficulty");
@@ -59,7 +61,6 @@ public class HighScoreActivity extends AppCompatActivity {
 
     private void saveHighScore(){
         try{
-            createTable();
             //Insert
             myDatabase.execSQL("INSERT INTO HighScores (difficulty, highScore) VALUES ('" + difficulty + "', " + score + ")");
 
@@ -69,7 +70,6 @@ public class HighScoreActivity extends AppCompatActivity {
         myDatabase.close();
     }
 
-
     private List<String> getHighScores(boolean viewAll){
             SQLiteDatabase myDatabase = this.openOrCreateDatabase("HighScoreDatabase", MODE_PRIVATE, null);
 
@@ -78,7 +78,6 @@ public class HighScoreActivity extends AppCompatActivity {
             if (!viewAll) {
                 c = myDatabase.rawQuery("SELECT * FROM HighScores WHERE difficulty = '" + difficulty + "'", null);
             } else {
-                createTable();
                 c = myDatabase.rawQuery("SELECT * FROM HighScores", null);
             }
 
@@ -114,10 +113,6 @@ public class HighScoreActivity extends AppCompatActivity {
 
             return highScoreList;
         }
-
-    private void createTable() {
-        myDatabase.execSQL("CREATE TABLE IF NOT EXISTS HighScores (difficulty VARCHAR, highScore INT(4) UNIQUE)");
-    }
 
     private void setUpHighScoreListView(List<String> highScoreList) {
 
