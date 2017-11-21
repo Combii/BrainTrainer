@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
         android:onClick="seeHighScore"
-        android:text="See HighScore"
+        android:text="See HighScores"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

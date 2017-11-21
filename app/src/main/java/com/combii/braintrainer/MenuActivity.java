@@ -39,8 +39,11 @@ public class MenuActivity extends AppCompatActivity {
 
     public void seeHighScore(View view) {
 
-        //Intent intent = new Intent(getApplicationContext(), [ActivityName].class);
-        //startActivity(intent);
+        Intent intent = new Intent(getApplicationContext(), HighScoreActivity.class);
+
+        intent.putExtra("viewAll", true);
+
+        startActivity(intent);
 
 
     }

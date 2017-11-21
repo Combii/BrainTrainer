@@ -1,10 +1,10 @@
 package com.combii.braintrainer;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -22,6 +21,7 @@ public class HighScoreActivity extends AppCompatActivity {
 
     Difficulty difficulty;
     int score;
+    SQLiteDatabase myDatabase;
 
     ListView highScoreListView;
 
@@ -29,6 +29,8 @@ public class HighScoreActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
+
+        myDatabase = this.openOrCreateDatabase("HighScoreDatabase", MODE_PRIVATE, null);
 
         highScoreListView = (ListView) findViewById(R.id.highscoreListView);
 
@@ -39,43 +41,53 @@ public class HighScoreActivity extends AppCompatActivity {
     private void getHighScore(){
         Intent intent = getIntent();
 
-        //getStringExtra if String
-        difficulty  = (Difficulty) intent.getSerializableExtra("difficulty");
-        score = intent.getIntExtra("score", 0);
+        boolean viewAllHighscores = intent.getBooleanExtra("viewAll",false);
 
-        Log.i("INFO: ", score + "");
-        Log.i("INFO: ", difficulty.toString());
+        if (!viewAllHighscores) {
+            //getStringExtra if String
+            difficulty  = (Difficulty) intent.getSerializableExtra("difficulty");
+            score = intent.getIntExtra("score", 0);
 
-        saveHighScore();
+            Log.i("INFO: ", score + "");
+            Log.i("INFO: ", difficulty.toString());
+
+            saveHighScore();
+        } else {
+            getHighScores(true);
+        }
     }
 
     private void saveHighScore(){
-        SQLiteDatabase myDatabase = this.openOrCreateDatabase("HighScoreDatabase", MODE_PRIVATE, null);
         try{
-            myDatabase.execSQL("CREATE TABLE IF NOT EXISTS HighScores (difficulty VARCHAR, highScore INT(4) UNIQUE)");
-
+            createTable();
             //Insert
             myDatabase.execSQL("INSERT INTO HighScores (difficulty, highScore) VALUES ('" + difficulty + "', " + score + ")");
 
         } catch (SQLiteConstraintException ignored){
         }
-        setUpHighScoreListView(getHighScores());
+        setUpHighScoreListView(getHighScores(false));
         myDatabase.close();
     }
 
 
-        private List<Integer> getHighScores(){
+        private List<String> getHighScores(boolean viewAll){
             SQLiteDatabase myDatabase = this.openOrCreateDatabase("HighScoreDatabase", MODE_PRIVATE, null);
 
+            Cursor c;
             //Get
-            Cursor c = myDatabase.rawQuery("SELECT * FROM HighScores WHERE difficulty = '" + difficulty + "'", null);
+            if (!viewAll) {
+                c = myDatabase.rawQuery("SELECT * FROM HighScores WHERE difficulty = '" + difficulty + "'", null);
+            } else {
+                createTable();
+                c = myDatabase.rawQuery("SELECT * FROM HighScores", null);
+            }
 
             int difficultyIndex = c.getColumnIndex("difficulty");
             int highScoreIndex = c.getColumnIndex("highScore");
 
             c.moveToFirst();
 
-            List<Integer> highScoreList = new ArrayList<>();
+            List<String> highScoreList = new ArrayList<>();
 
             try {
                 while (c != null) {
@@ -83,7 +95,11 @@ public class HighScoreActivity extends AppCompatActivity {
                     Log.i("Difficulty: ", c.getString(difficultyIndex));
                     Log.i("HighScore: ", c.getString(highScoreIndex));
 
-                    highScoreList.add(c.getInt(highScoreIndex));
+                    if (!viewAll) {
+                        highScoreList.add(c.getString(highScoreIndex));
+                    } else {
+                        highScoreList.add(c.getInt(highScoreIndex) + " " + c.getString(difficultyIndex)) ;
+                    }
 
                     c.moveToNext();
                 }
@@ -99,13 +115,17 @@ public class HighScoreActivity extends AppCompatActivity {
             return highScoreList;
         }
 
-        private void setUpHighScoreListView(List<Integer> highScoreList) {
+    private void createTable() {
+        myDatabase.execSQL("CREATE TABLE IF NOT EXISTS HighScores (difficulty VARCHAR, highScore INT(4) UNIQUE)");
+    }
+
+    private void setUpHighScoreListView(List<String> highScoreList) {
 
         setTitle("Difficulty: " + difficulty);
 
 
 
-        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,highScoreList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,highScoreList);
 
         highScoreListView.setAdapter(arrayAdapter);
         highScoreListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
