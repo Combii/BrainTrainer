@@ -43,7 +43,10 @@ public class HighScoreActivity extends AppCompatActivity {
 
         boolean viewAllHighScores = intent.getBooleanExtra("viewAll",false);
 
-        myDatabase.execSQL("CREATE TABLE IF NOT EXISTS HighScores (difficulty VARCHAR, highScore INT(4) UNIQUE)");
+
+        //myDatabase.execSQL("DROP TABLE HighScores");
+        myDatabase.execSQL("CREATE TABLE IF NOT EXISTS HighScores (difficulty VARCHAR, highScore INT(4), CONSTRAINT unq UNIQUE (difficulty, highScore))");
+
 
         if (!viewAllHighScores) {
             //getStringExtra if String
