@@ -26,9 +26,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:layout_marginLeft="0dp"
-        android:tag="Medium"
         android:onClick="buttonClicked"
+        android:tag="Medium"
         android:text="Medium"
         app:layout_constraintBottom_toTopOf="@+id/easy"
         app:layout_constraintLeft_toLeftOf="@+id/hard"
@@ -50,4 +49,15 @@
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1" />
+
+    <Button
+        android:id="@+id/seeHighScoreButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:onClick="seeHighScore"
+        android:text="See HighScore"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
