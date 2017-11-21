@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HighScoreActivity extends AppCompatActivity {
@@ -91,6 +92,8 @@ public class HighScoreActivity extends AppCompatActivity {
             }
 
             myDatabase.close();
+
+            Collections.sort(highScoreList);
 
             return highScoreList;
         }
