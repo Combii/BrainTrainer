@@ -3,6 +3,7 @@ package com.combii.braintrainer;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,21 +48,17 @@ public class HighScoreActivity extends AppCompatActivity {
     }
 
     private void saveHighScore(){
+        SQLiteDatabase myDatabase = this.openOrCreateDatabase("HighScoreDatabase", MODE_PRIVATE, null);
         try{
-            SQLiteDatabase myDatabase = this.openOrCreateDatabase("HighScoreDatabase", MODE_PRIVATE, null);
-
             myDatabase.execSQL("CREATE TABLE IF NOT EXISTS HighScores (difficulty VARCHAR, highScore INT(4) UNIQUE)");
 
             //Insert
             myDatabase.execSQL("INSERT INTO HighScores (difficulty, highScore) VALUES ('" + difficulty + "', " + score + ")");
 
-            setUpHighScoreListView(getHighScores());
-
-            myDatabase.close();
-
-        } catch (Exception e){
-            e.printStackTrace();
+        } catch (SQLiteConstraintException ignored){
         }
+        setUpHighScoreListView(getHighScores());
+        myDatabase.close();
     }
 
 
