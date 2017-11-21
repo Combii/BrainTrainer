@@ -37,37 +37,38 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/buttonHard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:onClick="clickedButtonHard"
             android:text="hard"
             tools:layout_editor_absoluteX="266dp"
-            tools:layout_editor_absoluteY="73dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
 
-            />
+            tools:layout_editor_absoluteY="73dp" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/buttonMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:onClick="clickedButtonMedium"
             android:text="medium"
             tools:layout_editor_absoluteX="137dp"
-            tools:layout_editor_absoluteY="73dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            tools:layout_editor_absoluteY="73dp" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/buttonEasy"
             android:layout_width="88dp"
             android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:onClick="clickedButtonEasy"
             android:text="Easy"
             tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="73dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+
+            tools:layout_editor_absoluteY="73dp" />
     </GridLayout>
 </android.support.constraint.ConstraintLayout>

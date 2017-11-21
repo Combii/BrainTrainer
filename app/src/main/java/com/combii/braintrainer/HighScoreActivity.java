@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -38,92 +39,80 @@ public class HighScoreActivity extends AppCompatActivity {
     }
 
 
-    private void getHighScore(){
+    private void getHighScore() {
         Intent intent = getIntent();
 
-        boolean viewAllHighScores = intent.getBooleanExtra("viewAll",false);
+        boolean viewAllHighScores = intent.getBooleanExtra("viewAll", false);
 
-
-        //myDatabase.execSQL("DROP TABLE HighScores");
         myDatabase.execSQL("CREATE TABLE IF NOT EXISTS HighScores (difficulty VARCHAR, highScore INT(4), CONSTRAINT unq UNIQUE (difficulty, highScore))");
-
 
         if (!viewAllHighScores) {
             //getStringExtra if String
-            difficulty  = (Difficulty) intent.getSerializableExtra("difficulty");
+            difficulty = (Difficulty) intent.getSerializableExtra("difficulty");
             score = intent.getIntExtra("score", 0);
 
             Log.i("INFO: ", score + "");
             Log.i("INFO: ", difficulty.toString());
 
             saveHighScore();
-        } else {
-            setUpHighScoreListView(getHighScores(true));
         }
+
+        setUpHighScoreListView(getHighScores(difficulty));
     }
 
-    private void saveHighScore(){
-        try{
+    private void saveHighScore() {
+        try {
             //Insert
             myDatabase.execSQL("INSERT INTO HighScores (difficulty, highScore) VALUES ('" + difficulty + "', " + score + ")");
 
-        } catch (SQLiteConstraintException ignored){
+        } catch (SQLiteConstraintException ignored) {
         }
-        setUpHighScoreListView(getHighScores(false));
+        setUpHighScoreListView(getHighScores(difficulty));
         myDatabase.close();
     }
 
-    private List<String> getHighScores(boolean viewAll){
-            SQLiteDatabase myDatabase = this.openOrCreateDatabase("HighScoreDatabase", MODE_PRIVATE, null);
+    private List<String> getHighScores(Difficulty difficulty) {
+        SQLiteDatabase myDatabase = this.openOrCreateDatabase("HighScoreDatabase", MODE_PRIVATE, null);
 
-            Cursor c;
-            //Get
-            if (!viewAll) {
-                c = myDatabase.rawQuery("SELECT * FROM HighScores WHERE difficulty = '" + difficulty + "'", null);
-            } else {
-                c = myDatabase.rawQuery("SELECT * FROM HighScores", null);
+        Cursor c;
+        //Get
+        c = myDatabase.rawQuery("SELECT * FROM HighScores WHERE difficulty = '" + difficulty + "'", null);
+
+
+        int difficultyIndex = c.getColumnIndex("difficulty");
+        int highScoreIndex = c.getColumnIndex("highScore");
+
+        c.moveToFirst();
+
+        List<String> highScoreList = new ArrayList<>();
+
+        try {
+            while (c != null) {
+
+                Log.i("Difficulty: ", c.getString(difficultyIndex));
+                Log.i("HighScore: ", c.getString(highScoreIndex));
+
+                highScoreList.add(c.getString(highScoreIndex));
+
+                c.moveToNext();
             }
-
-            int difficultyIndex = c.getColumnIndex("difficulty");
-            int highScoreIndex = c.getColumnIndex("highScore");
-
-            c.moveToFirst();
-
-            List<String> highScoreList = new ArrayList<>();
-
-            try {
-                while (c != null) {
-
-                    Log.i("Difficulty: ", c.getString(difficultyIndex));
-                    Log.i("HighScore: ", c.getString(highScoreIndex));
-
-                    if (!viewAll) {
-                        highScoreList.add(c.getString(highScoreIndex));
-                    } else {
-                        highScoreList.add(c.getInt(highScoreIndex) + " " + c.getString(difficultyIndex)) ;
-                    }
-
-                    c.moveToNext();
-                }
-                c.close();
-            }
-            catch (Exception ignored){
-            }
-
-            myDatabase.close();
-
-            highScoreList.sort(Comparator.reverseOrder());
-
-            return highScoreList;
+            c.close();
+        } catch (Exception ignored) {
         }
+
+        myDatabase.close();
+
+        highScoreList.sort(Comparator.reverseOrder());
+
+        return highScoreList;
+    }
 
     private void setUpHighScoreListView(List<String> highScoreList) {
 
         setTitle("Difficulty: " + difficulty);
 
 
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,highScoreList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, highScoreList);
 
         highScoreListView.setAdapter(arrayAdapter);
         highScoreListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -132,6 +121,19 @@ public class HighScoreActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    public void clickedButtonHard(View view) {
+        setUpHighScoreListView(getHighScores(Difficulty.HARD));
+    }
+
+    public void clickedButtonMedium(View view) {
+        setUpHighScoreListView(getHighScores(Difficulty.MEDIUM));
+    }
+
+    public void clickedButtonEasy(View view) {
+        setUpHighScoreListView(getHighScores(Difficulty.EASY));
     }
 }
 
