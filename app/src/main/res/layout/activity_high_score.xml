@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.combii.braintrainer.HighScoreActivity">
+    tools:context="com.combii.braintrainer.HighScoreActivity"
+    tools:layout_editor_absoluteY="81dp">
 
     <ListView
         android:id="@+id/highscoreListView"
@@ -13,13 +14,60 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout"
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1" />
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="0dp"
+        android:layout_height="57dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/highscoreListView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hard"
+            tools:layout_editor_absoluteX="266dp"
+            tools:layout_editor_absoluteY="73dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+
+            />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="medium"
+            tools:layout_editor_absoluteX="137dp"
+            tools:layout_editor_absoluteY="73dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:text="Easy"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="73dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            />
+    </GridLayout>
 </android.support.constraint.ConstraintLayout>
