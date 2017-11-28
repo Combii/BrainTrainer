@@ -1,3 +1,0 @@
-1) Knap til at se highscore fra hovedmenu
-2) Tjek at highscore ikke allerede eksitere hvis gør ikke gem.
-3) Highscores skal sorteres

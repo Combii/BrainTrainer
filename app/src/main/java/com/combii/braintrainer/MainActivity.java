@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     Difficulty difficulty;
     int range = 0;
 
+    CalculationGenerator gen;
+
     long currTimeLeft;
     CountDownTimer counter;
 
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     Button playAgainButton, highScoreButton;
 
 
-    int number1, number2, result, score, amountOfGames;
+    int result, score, amountOfGames;
 
 
     @Override
@@ -56,8 +58,9 @@ public class MainActivity extends AppCompatActivity {
         titleTextView = (TextView) findViewById(R.id.titleTextView);
         playAgainButton = (Button) findViewById(R.id.playAgainButton);
         highScoreButton = (Button) findViewById(R.id.saveHighscore);
-
         checkDifficulty();
+        gen = new CalculationGenerator(difficulty);
+
         resetGame();
     }
 
@@ -147,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpNewGame() {
-        generateCalculation();
         setUpListNumbers();
     }
 
@@ -164,61 +166,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpListNumbers() {
-        Random r = new Random();
 
-        String intS;
+        List<Integer> randomNumbers = gen.generateResult();
 
-        for (TextView textView : textViewList) {
-            intS = Integer.toString(r.nextInt(range) + 1);
-            textView.setText(intS);
+        for (int i = 0; i < randomNumbers.size(); i++) {
+            textViewList.get(i).setText(randomNumbers.get(i) + "");
         }
-
-        intS = Integer.toString(result);
-
-        textViewList.get(r.nextInt(textViewList.size())).setText(intS);
-    }
-
-    private void generateCalculation() {
-        Random random = new Random();
-        number1 = random.nextInt(range / 2) + 1;
-        number2 = random.nextInt(range / 2) + 1;
-
-        result = number1 + number2;
-
-        Log.i("Result: ", Integer.toString(result));
-
-        calculationTextView.setText(Integer.toString(number1) + " + " + Integer.toString(number2));
+        calculationTextView.setText(gen.getCalctionString());
+        result = gen.getResult();
     }
 
     private void setUpCountDownTimer() {
-        /*new CountDownTimer(30000, 1000) {
-            @Override
-            public void onTick(long l) {
-                updateCountDownTimer((int) l / 1000);
-            }
-
-            @Override
-            public void onFinish() {
-                stopGame();
-            }
-        }.start();*/
-
         counter = new CountDownTimer(30000, 1000) {
             @Override
             public void onTick(long l) {
                 updateCountDownTimer((int) l / 1000);
-
             }
 
             @Override
             public void onFinish() {
                 stopGame();
             }
-
-
         }.start();
-
-
     }
 
     @Override
@@ -227,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
         Log.i("Is in ON PAUSE: ", "");
         counter.pause();
     }
+
     @Override
     protected void onRestart() {
         super.onRestart();
