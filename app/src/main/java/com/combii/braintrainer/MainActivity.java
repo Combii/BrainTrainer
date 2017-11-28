@@ -3,7 +3,8 @@ package com.combii.braintrainer;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.CountDownTimer;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
     Difficulty difficulty;
     int range = 0;
 
+    long currTimeLeft;
+    CountDownTimer counter;
+
+
     Button playAgainButton, highScoreButton;
 
 
@@ -38,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i("Info","In on create");
+        Log.i("Info", "In on create");
 
         textViewList.add((TextView) findViewById(R.id.textView));
         textViewList.add((TextView) findViewById(R.id.textView2));
@@ -59,17 +64,15 @@ public class MainActivity extends AppCompatActivity {
     private void checkDifficulty() {
         Intent intent = getIntent();
 
-        difficulty  = (Difficulty) intent.getSerializableExtra("difficulty");
+        difficulty = (Difficulty) intent.getSerializableExtra("difficulty");
 
-        if(difficulty == Difficulty.HARD) {
+        if (difficulty == Difficulty.HARD) {
             Log.i("Difficulty", "Difficulty set to Hard");
             range = 100;
-        }
-        else if(difficulty == Difficulty.MEDIUM) {
+        } else if (difficulty == Difficulty.MEDIUM) {
             Log.i("Difficulty", "Difficulty set to Medium");
             range = 60;
-        }
-        else if(difficulty == Difficulty.EASY) {
+        } else if (difficulty == Difficulty.EASY) {
             Log.i("Difficulty", "Difficulty set to Easy");
             range = 20;
         }
@@ -83,13 +86,13 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(getApplicationContext(), HighScoreActivity.class);
 
-        intent.putExtra("difficulty",difficulty);
+        intent.putExtra("difficulty", difficulty);
         intent.putExtra("score", score);
 
         startActivity(intent);
     }
 
-    private void resetGame(){
+    private void resetGame() {
         score = 0;
         amountOfGames = 0;
 
@@ -101,10 +104,11 @@ public class MainActivity extends AppCompatActivity {
         titleTextView.setText("");
     }
 
-    private void stopGame(){
-        for(final TextView textView : textViewList){
+    private void stopGame() {
+        for (final TextView textView : textViewList) {
             textView.setOnClickListener(null);
         }
+        timerTextView.setText("0s");
         playAgainButton.setVisibility(View.VISIBLE);
         highScoreButton.setVisibility(View.VISIBLE);
 
@@ -116,17 +120,16 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences.edit().putString("highscore", score + "").apply();
     }
 
-    private void checkAnswer(int value){
+    private void checkAnswer(int value) {
         amountOfGames++;
 
         String rS;
 
-        if(value == result){
+        if (value == result) {
             score++;
             rS = "Correct!";
             titleTextView.setText(rS);
-        }
-        else{
+        } else {
             rS = "Wrong!";
             titleTextView.setText(rS);
         }
@@ -136,20 +139,20 @@ public class MainActivity extends AppCompatActivity {
         updateScore();
     }
 
-    private void updateScore(){
+    private void updateScore() {
         String scoreS = Integer.toString(score);
         String amountOfGamesS = Integer.toString(amountOfGames);
 
         scoreTextView.setText(scoreS + "/" + amountOfGamesS);
     }
 
-    private void setUpNewGame(){
+    private void setUpNewGame() {
         generateCalculation();
         setUpListNumbers();
     }
 
-    private void setupList(){
-        for(final TextView textView : textViewList){
+    private void setupList() {
+        for (final TextView textView : textViewList) {
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -160,12 +163,12 @@ public class MainActivity extends AppCompatActivity {
         setUpNewGame();
     }
 
-    private void setUpListNumbers(){
+    private void setUpListNumbers() {
         Random r = new Random();
 
         String intS;
 
-        for(TextView textView : textViewList){
+        for (TextView textView : textViewList) {
             intS = Integer.toString(r.nextInt(range) + 1);
             textView.setText(intS);
         }
@@ -175,10 +178,10 @@ public class MainActivity extends AppCompatActivity {
         textViewList.get(r.nextInt(textViewList.size())).setText(intS);
     }
 
-    private void generateCalculation(){
+    private void generateCalculation() {
         Random random = new Random();
-        number1 = random.nextInt(range/2) + 1;
-        number2 = random.nextInt(range/2) + 1;
+        number1 = random.nextInt(range / 2) + 1;
+        number2 = random.nextInt(range / 2) + 1;
 
         result = number1 + number2;
 
@@ -187,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         calculationTextView.setText(Integer.toString(number1) + " + " + Integer.toString(number2));
     }
 
-    private void setUpCountDownTimer(){
+    private void setUpCountDownTimer() {
         /*new CountDownTimer(30000, 1000) {
             @Override
             public void onTick(long l) {
@@ -199,20 +202,39 @@ public class MainActivity extends AppCompatActivity {
                 stopGame();
             }
         }.start();*/
-        new CountDownTimer(3000, 100) {
+
+        counter = new CountDownTimer(30000, 1000) {
             @Override
             public void onTick(long l) {
-                updateCountDownTimer((int) l / 100);
+                updateCountDownTimer((int) l / 1000);
+
             }
 
             @Override
             public void onFinish() {
                 stopGame();
             }
+
+
         }.start();
+
+
     }
 
-    public void updateCountDownTimer(int amount){
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("Is in ON PAUSE: ", "");
+        counter.pause();
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i("Current Timer: ", currTimeLeft + "");
+        counter.resume();
+    }
+
+    public void updateCountDownTimer(int amount) {
         int minutes = amount / 60;
         int seconds = amount - minutes * 60;
 
