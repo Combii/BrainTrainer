@@ -61,7 +61,7 @@ public class CalculationGenerator {
 
     private List<Integer> generateMultiplicationResult() {
         int number1 = r.nextInt(rangeMultiplication) + 1;
-        int number2 = r.nextInt(rangeMultiplication) + 1;
+        int number2 = r.nextInt(9) + 1;
 
         result = number1 * number2;
 
@@ -100,9 +100,9 @@ public class CalculationGenerator {
     private List<Integer> generateList(int range) {
 
         List<Integer> randomNumbers = new ArrayList<>(Arrays.asList(
-                r.nextInt(range) + 1,
-                r.nextInt(range) + 1,
-                r.nextInt(range) + 1,
+                result + r.nextInt(10) +1 ,
+                result - r.nextInt(10) +1,
+                result + r.nextInt(10) +1,
                 result
         ));
 
