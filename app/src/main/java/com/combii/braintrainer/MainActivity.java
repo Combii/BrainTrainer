@@ -3,8 +3,6 @@ package com.combii.braintrainer;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,27 +55,15 @@ public class MainActivity extends AppCompatActivity {
         titleTextView = (TextView) findViewById(R.id.titleTextView);
         playAgainButton = (Button) findViewById(R.id.playAgainButton);
         highScoreButton = (Button) findViewById(R.id.saveHighscore);
-        checkDifficulty();
+        getDifficulty();
         gen = new CalculationGenerator(difficulty);
 
         resetGame();
     }
 
-    private void checkDifficulty() {
+    private void getDifficulty() {
         Intent intent = getIntent();
-
         difficulty = (Difficulty) intent.getSerializableExtra("difficulty");
-
-        if (difficulty == Difficulty.HARD) {
-            Log.i("Difficulty", "Difficulty set to Hard");
-            range = 100;
-        } else if (difficulty == Difficulty.MEDIUM) {
-            Log.i("Difficulty", "Difficulty set to Medium");
-            range = 60;
-        } else if (difficulty == Difficulty.EASY) {
-            Log.i("Difficulty", "Difficulty set to Easy");
-            range = 20;
-        }
     }
 
     public void clickedPlayAgainButton(View view) {

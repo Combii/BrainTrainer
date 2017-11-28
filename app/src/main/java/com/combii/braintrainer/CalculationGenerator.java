@@ -46,7 +46,7 @@ public class CalculationGenerator {
     public List<Integer> generateResult() {
 
 
-        int AddSubtractOrMultiply = 0;
+        int AddSubtractOrMultiply = r.nextInt(3);
 
         switch (AddSubtractOrMultiply) {
             case 0:
@@ -60,11 +60,27 @@ public class CalculationGenerator {
     }
 
     private List<Integer> generateMultiplicationResult() {
-        return null;
+        int number1 = r.nextInt(rangeMultiplication) + 1;
+        int number2 = r.nextInt(rangeMultiplication) + 1;
+
+        result = number1 * number2;
+
+        calctionString = number1 + " * " + number2;
+
+
+        return generateList(rangeMultiplication);
     }
 
     private List<Integer> generateSubtractionResult() {
-        return null;
+        int number1 = r.nextInt(rangeSubtraction) + 1;
+        int number2 = r.nextInt(rangeSubtraction) + 1;
+
+        result = number1 - number2;
+
+        calctionString = number1 + " - " + number2;
+
+
+        return generateList(rangeSubtraction);
     }
 
     private List<Integer> generateAdditionResult() {
