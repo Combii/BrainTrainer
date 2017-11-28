@@ -4,15 +4,16 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
+
+import com.combii.braintrainer.DAO.HighScoreDao;
+import com.combii.braintrainer.DAO.HighScoreSQLDaoImpl;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -22,7 +23,7 @@ public class HighScoreActivity extends AppCompatActivity {
 
     Difficulty difficulty;
     int score;
-    SQLiteDatabase myDatabase;
+    HighScoreDao dao;
 
     ListView highScoreListView;
 
@@ -31,7 +32,7 @@ public class HighScoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
 
-        myDatabase = this.openOrCreateDatabase("HighScoreDatabase", MODE_PRIVATE, null);
+        dao = new HighScoreSQLDaoImpl(this.openOrCreateDatabase("HighScoreDatabase", MODE_PRIVATE, null));
 
         highScoreListView = (ListView) findViewById(R.id.highscoreListView);
 
@@ -51,6 +52,8 @@ public class HighScoreActivity extends AppCompatActivity {
             difficulty = (Difficulty) intent.getSerializableExtra("difficulty");
             score = intent.getIntExtra("score", 0);
 
+
+
             Log.i("INFO: ", score + "");
             Log.i("INFO: ", difficulty.toString());
 
@@ -62,6 +65,8 @@ public class HighScoreActivity extends AppCompatActivity {
 
     private void saveHighScore() {
         try {
+
+            dao.save(new HighScore(score,difficulty));
             //Insert
             myDatabase.execSQL("INSERT INTO HighScores (difficulty, highScore) VALUES ('" + difficulty + "', " + score + ")");
 

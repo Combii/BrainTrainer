@@ -102,10 +102,6 @@ public class MainActivity extends AppCompatActivity {
 
         String rS = "Your score: " + score + "/" + amountOfGames;
         titleTextView.setText(rS);
-
-        SharedPreferences sharedPreferences = this.getSharedPreferences("com.combii.braintrainer", Context.MODE_PRIVATE);
-
-        sharedPreferences.edit().putString("highscore", score + "").apply();
     }
 
     private void checkAnswer(int value) {
