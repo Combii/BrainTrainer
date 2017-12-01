@@ -75,4 +75,9 @@ public class HighScoreSQLDaoImpl implements HighScoreDao {
         return highScoreList;
     }
 
+    public void closeDb(){
+        if(myDatabase.isOpen())
+        myDatabase.close();
+    }
+
 }

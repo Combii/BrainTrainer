@@ -101,6 +101,12 @@ public class HighScoreActivity extends AppCompatActivity {
         }
         return scores;
     }
-    
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dao.closeDb();
+        Log.i("Life Cycle: ", "IS IN OnDestroy");
+    }
 }
 

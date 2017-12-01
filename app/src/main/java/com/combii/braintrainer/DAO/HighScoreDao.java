@@ -13,6 +13,7 @@ public interface HighScoreDao {
 
     void save(HighScore highScore);
     List<HighScore> findByDifficulty(Difficulty difficulty);
+    void closeDb();
 
 
 }
