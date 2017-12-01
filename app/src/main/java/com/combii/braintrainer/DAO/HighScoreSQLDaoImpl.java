@@ -12,22 +12,24 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static android.content.Context.MODE_PRIVATE;
-
 
 public class HighScoreSQLDaoImpl implements HighScoreDao {
 
     SQLiteDatabase myDatabase;
 
     public HighScoreSQLDaoImpl(SQLiteDatabase myDatabase) {
-        
         this.myDatabase = myDatabase;
+    }
+
+    private HighScoreSQLDaoImpl() {
     }
 
     @Override
     public void save(HighScore highScore) {
-        try {
 
+        myDatabase.execSQL("CREATE TABLE IF NOT EXISTS HighScores (difficulty VARCHAR, highScore INT(4), CONSTRAINT unq UNIQUE (difficulty, highScore))");
+
+        try {
             //Insert
             myDatabase.execSQL("INSERT INTO HighScores (difficulty, highScore) VALUES ('" + highScore.getDifficulty() + "', " + highScore.getScore() + ")");
 
@@ -38,6 +40,8 @@ public class HighScoreSQLDaoImpl implements HighScoreDao {
 
     @Override
     public List<HighScore> findByDifficulty(Difficulty difficulty) {
+        //myDatabase.execSQL("CREATE TABLE IF NOT EXISTS HighScores (difficulty VARCHAR, highScore INT(4), CONSTRAINT unq UNIQUE (difficulty, highScore))");
+
 
         Cursor c;
         //Get
@@ -49,7 +53,7 @@ public class HighScoreSQLDaoImpl implements HighScoreDao {
 
         c.moveToFirst();
 
-        List<String> highScoreList = new ArrayList<>();
+        List<HighScore> highScoreList = new ArrayList<>();
 
         try {
             while (c != null) {
@@ -57,7 +61,7 @@ public class HighScoreSQLDaoImpl implements HighScoreDao {
                 Log.i("Difficulty: ", c.getString(difficultyIndex));
                 Log.i("HighScore: ", c.getString(highScoreIndex));
 
-                highScoreList.add(c.getString(highScoreIndex));
+                highScoreList.add(new HighScore(Integer.parseInt(c.getString(highScoreIndex)), difficulty));
 
                 c.moveToNext();
             }
@@ -65,10 +69,10 @@ public class HighScoreSQLDaoImpl implements HighScoreDao {
         } catch (Exception ignored) {
         }
 
-        myDatabase.close();
-
         highScoreList.sort(Comparator.reverseOrder());
+
 
         return highScoreList;
     }
+
 }

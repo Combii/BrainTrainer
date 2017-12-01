@@ -1,9 +1,6 @@
 package com.combii.braintrainer;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteConstraintException;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +13,6 @@ import com.combii.braintrainer.DAO.HighScoreDao;
 import com.combii.braintrainer.DAO.HighScoreSQLDaoImpl;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class HighScoreActivity extends AppCompatActivity {
@@ -36,7 +32,6 @@ public class HighScoreActivity extends AppCompatActivity {
 
         highScoreListView = (ListView) findViewById(R.id.highscoreListView);
 
-        getHighScore();
     }
 
 
@@ -45,7 +40,6 @@ public class HighScoreActivity extends AppCompatActivity {
 
         boolean viewAllHighScores = intent.getBooleanExtra("viewAll", false);
 
-        myDatabase.execSQL("CREATE TABLE IF NOT EXISTS HighScores (difficulty VARCHAR, highScore INT(4), CONSTRAINT unq UNIQUE (difficulty, highScore))");
 
         if (!viewAllHighScores) {
             //getStringExtra if String
@@ -57,65 +51,19 @@ public class HighScoreActivity extends AppCompatActivity {
             Log.i("INFO: ", score + "");
             Log.i("INFO: ", difficulty.toString());
 
-            saveHighScore();
-        }
-
-        setUpHighScoreListView(getHighScores(difficulty));
-    }
-
-    private void saveHighScore() {
-        try {
-
             dao.save(new HighScore(score,difficulty));
-            //Insert
-            myDatabase.execSQL("INSERT INTO HighScores (difficulty, highScore) VALUES ('" + difficulty + "', " + score + ")");
 
-        } catch (SQLiteConstraintException ignored) {
-        }
-        setUpHighScoreListView(getHighScores(difficulty));
-        myDatabase.close();
-    }
-
-    private List<String> getHighScores(Difficulty difficulty) {
-        SQLiteDatabase myDatabase = this.openOrCreateDatabase("HighScoreDatabase", MODE_PRIVATE, null);
-
-        Cursor c;
-        //Get
-        c = myDatabase.rawQuery("SELECT * FROM HighScores WHERE difficulty = '" + difficulty + "'", null);
-
-
-        int difficultyIndex = c.getColumnIndex("difficulty");
-        int highScoreIndex = c.getColumnIndex("highScore");
-
-        c.moveToFirst();
-
-        List<String> highScoreList = new ArrayList<>();
-
-        try {
-            while (c != null) {
-
-                Log.i("Difficulty: ", c.getString(difficultyIndex));
-                Log.i("HighScore: ", c.getString(highScoreIndex));
-
-                highScoreList.add(c.getString(highScoreIndex));
-
-                c.moveToNext();
-            }
-            c.close();
-        } catch (Exception ignored) {
         }
 
-        myDatabase.close();
-
-        highScoreList.sort(Comparator.reverseOrder());
-
-        return highScoreList;
+        setUpHighScoreListView(dao.findByDifficulty(difficulty));
     }
+    
 
-    private void setUpHighScoreListView(List<String> highScoreList) {
+    private void setUpHighScoreListView(List<HighScore> highScoreList) {
 
+        List<String> newHighScoreList = convertHighScoreList(highScoreList);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, highScoreList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, newHighScoreList);
 
         highScoreListView.setAdapter(arrayAdapter);
         highScoreListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -128,19 +76,31 @@ public class HighScoreActivity extends AppCompatActivity {
 
 
     public void clickedButtonHard(View view) {
-        setUpHighScoreListView(getHighScores(Difficulty.HARD));
+        setUpHighScoreListView(dao.findByDifficulty(Difficulty.HARD));
         setTitle("Difficulty: " + Difficulty.HARD.toString());
 
     }
 
     public void clickedButtonMedium(View view) {
-        setUpHighScoreListView(getHighScores(Difficulty.MEDIUM));
+        setUpHighScoreListView(dao.findByDifficulty(Difficulty.MEDIUM));
         setTitle("Difficulty: " + Difficulty.MEDIUM.toString());
     }
 
     public void clickedButtonEasy(View view) {
-        setUpHighScoreListView(getHighScores(Difficulty.EASY));
+        setUpHighScoreListView(dao.findByDifficulty(Difficulty.EASY));
         setTitle("Difficulty: " + Difficulty.EASY.toString());
     }
+    
+
+    private List<String> convertHighScoreList(List<HighScore> list){
+        List<String> scores = new ArrayList<>();
+
+        //Get list of scores as arraylist<String>
+        for(HighScore s : list) {
+            scores.add(String.valueOf(s.getScore()));
+        }
+        return scores;
+    }
+    
 }
 
