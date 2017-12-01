@@ -19,6 +19,7 @@ public class HighScoreSQLDaoImpl implements HighScoreDao {
 
     public HighScoreSQLDaoImpl(SQLiteDatabase myDatabase) {
         this.myDatabase = myDatabase;
+
     }
 
     private HighScoreSQLDaoImpl() {
@@ -35,7 +36,6 @@ public class HighScoreSQLDaoImpl implements HighScoreDao {
 
         } catch (SQLiteConstraintException ignored) {
         }
-        myDatabase.close();
     }
 
     @Override

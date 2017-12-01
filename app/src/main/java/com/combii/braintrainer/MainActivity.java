@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         intent.putExtra("difficulty", difficulty);
         intent.putExtra("score", score);
+        intent.putExtra("newHighScore", true);
 
         startActivity(intent);
     }

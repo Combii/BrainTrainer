@@ -32,28 +32,22 @@ public class HighScoreActivity extends AppCompatActivity {
 
         highScoreListView = (ListView) findViewById(R.id.highscoreListView);
 
+        Intent intent = getIntent();
+
+        if(intent.getBooleanExtra("newHighScore",false)) {
+            saveHighScore();
+        }
+
     }
 
 
-    private void getHighScore() {
+    private void saveHighScore() {
         Intent intent = getIntent();
 
-        boolean viewAllHighScores = intent.getBooleanExtra("viewAll", false);
+        difficulty = (Difficulty) intent.getSerializableExtra("difficulty");
+        score = intent.getIntExtra("score", 0);
 
-
-        if (!viewAllHighScores) {
-            //getStringExtra if String
-            difficulty = (Difficulty) intent.getSerializableExtra("difficulty");
-            score = intent.getIntExtra("score", 0);
-
-
-
-            Log.i("INFO: ", score + "");
-            Log.i("INFO: ", difficulty.toString());
-
-            dao.save(new HighScore(score,difficulty));
-
-        }
+        dao.save(new HighScore(score,difficulty));
 
         setUpHighScoreListView(dao.findByDifficulty(difficulty));
     }
