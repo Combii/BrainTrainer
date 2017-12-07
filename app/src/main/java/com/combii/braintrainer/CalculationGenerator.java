@@ -7,8 +7,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+
+import static com.combii.braintrainer.Difficulty.*;
 
 /**
  * Created by Combii on 28/11/2017.
@@ -45,7 +49,6 @@ public class CalculationGenerator {
 
     public List<Integer> generateResult() {
 
-
         int AddSubtractOrMultiply = r.nextInt(3);
 
         switch (AddSubtractOrMultiply) {
@@ -68,7 +71,7 @@ public class CalculationGenerator {
         calctionString = number1 + " * " + number2;
 
 
-        return generateList(rangeMultiplication);
+        return generateList();
     }
 
     private List<Integer> generateSubtractionResult() {
@@ -80,7 +83,7 @@ public class CalculationGenerator {
         calctionString = number1 + " - " + number2;
 
 
-        return generateList(rangeSubtraction);
+        return generateList();
     }
 
     private List<Integer> generateAdditionResult() {
@@ -93,37 +96,46 @@ public class CalculationGenerator {
         calctionString = number1 + " + " + number2;
 
 
-        return generateList(rangeAddition);
+        return generateList();
     }
 
 
-    private List<Integer> generateList(int range) {
+    private List<Integer> generateList() {
 
-        List<Integer> randomNumbers = new ArrayList<>(Arrays.asList(
-                result + r.nextInt(10) +1 ,
-                result - r.nextInt(10) +1,
-                result + r.nextInt(10) +1,
-                result
-        ));
 
-        Collections.shuffle(randomNumbers);
+        Set<Integer> listSet = new HashSet<>();
 
-        return randomNumbers;
+        listSet.add(result);
 
+        boolean subtractOrAdd = false;
+        while(listSet.size() < 4) {
+
+            if(subtractOrAdd) {
+                listSet.add(result + r.nextInt(10) + 1);
+                subtractOrAdd = false;
+            }
+            else{
+                listSet.add(result - r.nextInt(10) + 1);
+                subtractOrAdd = true;
+            }
+
+        }
+
+        return new ArrayList<>(listSet);
     }
 
 
     private void checkDifficulty() {
 
-        if (difficulty == Difficulty.HARD) {
+        if (difficulty == HARD) {
             rangeAddition = 100;
             rangeSubtraction = 80;
             rangeMultiplication = 30;
-        } else if (difficulty == Difficulty.MEDIUM) {
+        } else if (difficulty == MEDIUM) {
             rangeAddition = 60;
             rangeSubtraction = 40;
             rangeMultiplication = 20;
-        } else if (difficulty == Difficulty.EASY) {
+        } else if (difficulty == EASY) {
             rangeAddition = 20;
             rangeSubtraction = 10;
             rangeMultiplication = 10;

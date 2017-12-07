@@ -15,7 +15,7 @@ import java.util.List;
 
 public class HighScoreSQLDaoImpl implements HighScoreDao {
 
-    SQLiteDatabase myDatabase;
+    private SQLiteDatabase myDatabase;
 
     public HighScoreSQLDaoImpl(SQLiteDatabase myDatabase) {
         this.myDatabase = myDatabase;
@@ -41,7 +41,6 @@ public class HighScoreSQLDaoImpl implements HighScoreDao {
     @Override
     public List<HighScore> findByDifficulty(Difficulty difficulty) {
         //myDatabase.execSQL("CREATE TABLE IF NOT EXISTS HighScores (difficulty VARCHAR, highScore INT(4), CONSTRAINT unq UNIQUE (difficulty, highScore))");
-
 
         Cursor c;
         //Get
