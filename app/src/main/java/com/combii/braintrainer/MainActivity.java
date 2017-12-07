@@ -1,8 +1,6 @@
 package com.combii.braintrainer;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     TextView calculationTextView;
     TextView titleTextView;
     Difficulty difficulty;
-    int range = 0;
 
     CalculationGenerator gen;
 
@@ -76,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         intent.putExtra("difficulty", difficulty);
         intent.putExtra("score", score);
+        intent.putExtra("newHighScore", true);
 
         startActivity(intent);
     }
@@ -102,10 +100,6 @@ public class MainActivity extends AppCompatActivity {
 
         String rS = "Your score: " + score + "/" + amountOfGames;
         titleTextView.setText(rS);
-
-        SharedPreferences sharedPreferences = this.getSharedPreferences("com.combii.braintrainer", Context.MODE_PRIVATE);
-
-        sharedPreferences.edit().putString("highscore", score + "").apply();
     }
 
     private void checkAnswer(int value) {
