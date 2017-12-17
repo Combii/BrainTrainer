@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     Button playAgainButton, highScoreButton;
 
 
-    int result, score, amountOfGames;
+    int result, score, amountOfQuestions;
 
 
     @Override
@@ -80,9 +80,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void resetGame() {
         score = 0;
-        amountOfGames = 0;
+        amountOfQuestions = 0;
 
-        setupList();
+        setupNewQuestion();
         setUpCountDownTimer();
         playAgainButton.setVisibility(View.INVISIBLE);
         highScoreButton.setVisibility(View.INVISIBLE);
@@ -98,12 +98,12 @@ public class MainActivity extends AppCompatActivity {
         playAgainButton.setVisibility(View.VISIBLE);
         highScoreButton.setVisibility(View.VISIBLE);
 
-        String rS = "Your score: " + score + "/" + amountOfGames;
+        String rS = "Your score: " + score + "/" + amountOfQuestions;
         titleTextView.setText(rS);
     }
 
     private void checkAnswer(int value) {
-        amountOfGames++;
+        amountOfQuestions++;
 
         String rS;
 
@@ -117,22 +117,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        setUpNewGame();
+        setupNewQuestion();
         updateScore();
     }
 
     private void updateScore() {
         String scoreS = Integer.toString(score);
-        String amountOfGamesS = Integer.toString(amountOfGames);
+        String amountOfGamesS = Integer.toString(amountOfQuestions);
 
         scoreTextView.setText(scoreS + "/" + amountOfGamesS);
     }
 
-    private void setUpNewGame() {
+    private void setupNewQuestion() {
+        setupListeners();
         setUpListNumbers();
     }
 
-    private void setupList() {
+    private void setupListeners() {
         for (final TextView textView : textViewList) {
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -141,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-        setUpNewGame();
     }
 
     private void setUpListNumbers() {
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < randomNumbers.size(); i++) {
             textViewList.get(i).setText(randomNumbers.get(i) + "");
         }
-        calculationTextView.setText(gen.getCalctionString());
+        calculationTextView.setText(gen.getCalculationString());
         result = gen.getResult();
     }
 
@@ -171,8 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        super.onPause();
-        Log.i("Is in ON PAUSE: ", "");
+        super.onPause();        Log.i("Is in ON PAUSE: ", "");
         counter.pause();
     }
 

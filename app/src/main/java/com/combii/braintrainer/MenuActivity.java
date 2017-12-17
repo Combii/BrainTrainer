@@ -19,8 +19,6 @@ public class MenuActivity extends AppCompatActivity {
         easyButton = (Button) findViewById(R.id.easy);
         mediumButton = (Button) findViewById(R.id.medium);
         hardButton = (Button) findViewById(R.id.hard);
-
-
     }
 
 
