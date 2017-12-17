@@ -1,12 +1,6 @@
 package com.combii.braintrainer;
 
-import android.content.Intent;
-import android.util.Log;
-import android.widget.TextView;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -27,20 +21,19 @@ public class CalculationGenerator {
     private Random r = new Random();
 
 
-    private String calctionString;
+    private String calculationString;
     private int result;
 
     public CalculationGenerator(Difficulty difficulty) {
         this.difficulty = difficulty;
         checkDifficulty();
-
     }
 
     private CalculationGenerator() {
     }
 
-    public String getCalctionString() {
-        return calctionString;
+    public String getCalculationString() {
+        return calculationString;
     }
 
     public int getResult() {
@@ -68,7 +61,7 @@ public class CalculationGenerator {
 
         result = number1 * number2;
 
-        calctionString = number1 + " * " + number2;
+        calculationString = number1 + " * " + number2;
 
 
         return generateList();
@@ -80,7 +73,7 @@ public class CalculationGenerator {
 
         result = number1 - number2;
 
-        calctionString = number1 + " - " + number2;
+        calculationString = number1 + " - " + number2;
 
 
         return generateList();
@@ -93,7 +86,7 @@ public class CalculationGenerator {
 
         result = number1 + number2;
 
-        calctionString = number1 + " + " + number2;
+        calculationString = number1 + " + " + number2;
 
 
         return generateList();
