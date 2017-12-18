@@ -1,5 +1,7 @@
 package com.combii.braintrainer;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -37,6 +39,7 @@ public class CalculationGenerator {
     }
 
     public int getResult() {
+        Log.i("RESULT: ", result + "");
         return result;
     }
 
